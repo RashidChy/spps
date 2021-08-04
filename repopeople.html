@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+          .users{
+            border: 1px solid rgb(216, 214, 214);
+            margin: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: rgb(238, 237, 237);
+            flex-wrap: wrap;
+            display: flex;
+            align-items: center;
+            justify-content:left;
+          }
+          button{
+                box-shadow: 2px 2px 5px rgb(185, 185, 185);
+                padding: 20px;
+                border: 1px solid rgb(211, 211, 211);
+          }
+          button:hover{
+                background-color: rgb(187, 187, 187);
+                font-weight: bolder;
+                cursor:pointer;
+          }
+          .info{
+                margin-left: 20px;
+                font-size: 30px;
+                
+          }
+          .photo{
+                margin-left: 25px;
+          }
+
+    </style>
+    <title>Github Users</title>
+</head>
+<body>
+      <button id="btn" onclick="getApi();">Load Github Users</button>
+      <h1 id="title"></h1>
+    <p id="text"></p>
+    <div id="content"></div>
+      
+            
+      
+    <script>
+          
+        function getApi(){
+
+            let request = new XMLHttpRequest();
+            
+            request.open("GET", "https://api.github.com/users", true);
+
+            request.onload = function(){
+                if(this.status = 200){
+                    let content = "";
+                    let data = JSON.parse(this.responseText);
+                    document.getElementById('title').innerText="Github Users"
+                    for(let id in data){
+                        content += 
+                        `
+                        <div class="users">
+                              <div class="photo">
+                                    <img src='${data[id].avatar_url}' width="150" height="150">
+                              </div>
+
+                              <div class="info">
+                                    <h5>ID: ${parseInt(id)+1}</h5>
+                                    <h5>Login: ${data[id].login}</h5>
+                              </div>
+                        </div>`;
+                    }
+                    document.getElementById("content").innerHTML = content;
+                }
+            }
+            request.send();
+            let btn=document.getElementById('btn');
+            btn.style.display ="none";
+            
+        }
+        
+    </script>
+
+</body>
+</html>
